@@ -1,24 +1,28 @@
 from numpy.random import uniform
 from numpy.random import rand
-from math import cos
 from math import pi,sqrt,exp, inf
 import copy
 import statistics
 import ANN
 import ga
 import numpy
-
-
-def fitness(x_pop):
-    x = x_pop[0]
-    y = x_pop[1]
-    return x*x + y*y - 20*(cos(pi*x)+cos(pi*y)-2)
+import matplotlib.pyplot as plt
 
 
 def pso(c1, c2, iters, n_pop, pop, pop_weights_mat, data_inputs, data_outputs):
-
-
-    #x_pop = uniform(-10, 10, (n_pop, 2)
+    """
+    optimizes weights for nn
+    :param c1:
+    :param c2:
+    :param iters: number of iterations
+    :param n_pop: how big populations is
+    :param pop: initial population
+    :param pop_weights_mat: population in form of matrices needed for nn
+    :param data_inputs: file withs input for nn
+    :param data_outputs: file with expected outputs of nn
+    :return: 0: weights of the best solution, 1: accuracy of the best solution, 2: accuracies through iterations used
+     for plotting
+    """
     parameters_num = pop[0].size
     x_best = copy.copy(pop)
     v_pop = rand(n_pop, parameters_num)
@@ -43,10 +47,10 @@ def pso(c1, c2, iters, n_pop, pop, pop_weights_mat, data_inputs, data_outputs):
         # omega = 1
         omega_max = 0.9
         omega_min = 0.4
-        omega = 0.9 - ((omega_max - omega_min) / iters) * count
+        omega = omega_max - ((omega_max - omega_min) / iters) * count
         for i, el in enumerate(pop):
             for j, par in enumerate(el):
-                #w = 1 + 0.5* exp(-1*(pop[i][j]-x_best[i][j]))
+                #omega = 1 + 0.5* exp(-1*(pop[i][j]-x_best[i][j]))
                 v_pop[i][j] = omega*v_pop[i][j] + uniform(0, c1) * (x_best[i][j] - pop[i][j]) + uniform(0, c2)*(g_best[j] - pop[i][j])
                 pop[i][j] += v_pop[i][j]
 
@@ -60,24 +64,21 @@ def pso(c1, c2, iters, n_pop, pop, pop_weights_mat, data_inputs, data_outputs):
                 x_best[i]=pop[i]
 
     scores = ANN.fitness(pop_weights_mat, data_inputs, data_outputs, activation="sigmoid")
-    best_score = max(scores)
-    print(best_score)
-    print(pop)
-    #best_coordinate = pop[scores.index(best_score)]
-    return best_score, accuracies
+    best_score_value = max(scores)
+    print(best_score_value)
+    best_coordinate = pop[numpy.argmax(scores)]
+    return best_coordinate, best_score_value, accuracies
 
 
-if __name__ == "__main__":
-    n_pop = 1000
-    iters = 6
-    best_scores = []
-    for i in range(10):
-        print(100*"-")
-        result = pso(2.5, 2.5, iters, n_pop)
-        best_scores.append(result[1])
-        print("Best coordinates: {}\nBest score: {}".format(result[0], result[1]))
+def plot_pso(accuracies, num_generations, population, c1, c2):
+    plt.plot(accuracies, linewidth=5, color="black")
+    plt.xlabel("Iteration", fontsize=20)
+    plt.ylabel("Fitness", fontsize=20)
+    plt.xticks(numpy.arange(0, num_generations+1, 1), fontsize=15)
+    plt.yticks(numpy.arange(0, 101, 5), fontsize=15)
+    plt.text(num_generations-2, 10, "iterations: {}\npopulation: {}\nc1={} c2={}".format(num_generations, population, c1, c2),
+             fontsize=10, bbox=dict(boxstyle="round", ec=(0.7, 0.8, 1.0), fc=(0.8, 0.8, 1.0),))
+    save_string = "outputs/iters{}_population{}_c1{}_c2{}.png".format(num_generations, population, c1, c2)
+    plt.savefig(save_string)
 
-    print(100*'-')
-    print("Best score: {}".format(min(best_scores)))
-    print("Mean: {}".format(statistics.mean(best_scores)))
-    print("Stdev: {}".format(statistics.stdev(best_scores)))
+
