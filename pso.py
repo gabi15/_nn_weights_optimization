@@ -64,21 +64,24 @@ def pso(c1, c2, iters, n_pop, pop, pop_weights_mat, data_inputs, data_outputs):
                 x_best[i]=pop[i]
 
     scores = ANN.fitness(pop_weights_mat, data_inputs, data_outputs, activation="sigmoid")
-    best_score_value = max(scores)
-    print(best_score_value)
-    best_coordinate = pop[numpy.argmax(scores)]
-    return best_coordinate, best_score_value, accuracies
+    if g_best_val < max(scores):
+        g_best = pop[numpy.argmax(scores)]
+        g_best_val = max(scores)
+    accuracies.append(g_best_val)
+
+    return g_best, g_best_val, accuracies
 
 
 def plot_pso(accuracies, num_generations, population, c1, c2):
-    plt.plot(accuracies, linewidth=5, color="black")
-    plt.xlabel("Iteration", fontsize=20)
-    plt.ylabel("Fitness", fontsize=20)
-    plt.xticks(numpy.arange(0, num_generations+1, 1), fontsize=15)
-    plt.yticks(numpy.arange(0, 101, 5), fontsize=15)
+    plt.plot(accuracies, linewidth=4, color="black")
+    plt.xlabel("Iteration", fontsize=15)
+    plt.ylabel("Fitness", fontsize=15)
+    plt.xticks(numpy.arange(0, num_generations+1, 1), fontsize=12)
+    plt.yticks(numpy.arange(0, 101, 5), fontsize=12)
     plt.text(num_generations-2, 10, "iterations: {}\npopulation: {}\nc1={} c2={}".format(num_generations, population, c1, c2),
              fontsize=10, bbox=dict(boxstyle="round", ec=(0.7, 0.8, 1.0), fc=(0.8, 0.8, 1.0),))
-    save_string = "outputs/iters{}_population{}_c1{}_c2{}.png".format(num_generations, population, c1, c2)
+    save_string = "outputs/iters{}_population{}_c1_{}_c2_{}.png".format(num_generations, population, c1, c2)
     plt.savefig(save_string)
+    plt.close()
 
 
