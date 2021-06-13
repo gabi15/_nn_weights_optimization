@@ -23,8 +23,8 @@ f.close()
 
 sol_per_pop = 8
 num_parents_mating = 4
-num_generations = 10
-mutation_percent = 10
+num_generations = 1000
+mutation_percent = 3
 
 #Creating the initial population.
 initial_pop_weights = []
@@ -93,6 +93,7 @@ plt.ylabel("Fitness", fontsize=20)
 plt.xticks(numpy.arange(0, num_generations+1, 100), fontsize=15)
 plt.yticks(numpy.arange(0, 101, 5), fontsize=15)
 plt.show()
+plt.savefig("outputs/genetic_mutation_3.png")
 
 f = open("weights_"+str(num_generations)+"_iterations_"+str(mutation_percent)+"%_mutation.pkl", "wb")
 pickle.dump(pop_weights_mat, f)

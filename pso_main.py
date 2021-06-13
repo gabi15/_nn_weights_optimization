@@ -26,8 +26,9 @@ f.close()
 #                    {"n_pop": 30, "iters": 10, "c1": 2.0, "c2": 2.0}, {"n_pop": 50, "iters": 10, "c1": 1.49445, "c2": 1.49445},
 #                    {"n_pop": 40, "iters": 10, "c1": 1.49445, "c2": 1.49445}, {"n_pop": 30, "iters": 10, "c1": 1.49445, "c2": 1.49445}]
 
-test_parameters = [{"n_pop": 40, "iters": 18, "c1": 2.0, "c2": 2.0}, {"n_pop": 40, "iters": 18, "c1": 1.49445, "c2": 1.49445},
-                   {"n_pop": 40, "iters": 18, "c1": 2.8, "c2": 1.3}]
+# test_parameters = [{"n_pop": 40, "iters": 18, "c1": 2.0, "c2": 2.0}, {"n_pop": 40, "iters": 18, "c1": 1.49445, "c2": 1.49445},
+#                    {"n_pop": 40, "iters": 18, "c1": 2.8, "c2": 1.3}]
+test_parameters = [{"n_pop": 70, "iters": 22, "c1": 2.05, "c2": 2.05}]
 #test_parameters = [{"n_pop": 3, "iters": 2, "c1": 2.0, "c2": 2.0}, {"n_pop": 3, "iters": 2, "c1": 1.9, "c2": 1.46}]
 for el in test_parameters:
     n_pop = el["n_pop"]

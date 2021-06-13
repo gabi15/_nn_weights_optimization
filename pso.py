@@ -42,8 +42,8 @@ def pso(c1, c2, iters, n_pop, pop, pop_weights_mat, data_inputs, data_outputs):
         accuracies.append(g_best_val)
         print("g_best:")
         print(g_best_val)
-        # phi = c1+c2
-        # omega = 2 / (2 + sqrt(phi * phi - 4 * phi))
+        phi = c1+c2
+        K = 2 / abs(2 - phi - sqrt(phi * phi - 4 * phi))
         # omega = 1
         omega_max = 0.9
         omega_min = 0.4
@@ -51,7 +51,7 @@ def pso(c1, c2, iters, n_pop, pop, pop_weights_mat, data_inputs, data_outputs):
         for i, el in enumerate(pop):
             for j, par in enumerate(el):
                 #omega = 1 + 0.5* exp(-1*(pop[i][j]-x_best[i][j]))
-                v_pop[i][j] = omega*v_pop[i][j] + uniform(0, c1) * (x_best[i][j] - pop[i][j]) + uniform(0, c2)*(g_best[j] - pop[i][j])
+                v_pop[i][j] = K*(omega*v_pop[i][j] + uniform(0, c1) * (x_best[i][j] - pop[i][j]) + uniform(0, c2)*(g_best[j] - pop[i][j]))
                 pop[i][j] += v_pop[i][j]
 
         # change local best
