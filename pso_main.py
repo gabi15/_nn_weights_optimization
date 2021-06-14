@@ -16,20 +16,10 @@ data_outputs = pickle.load(f)
 f.close()
 
 # parameters to play with, the bigger population the better results should be, but it takes memory,
-# iterations should probably be about 10
-# n_pop = 2
-# iters = 2
-# c1 = 2.3
-# c2 = 2.3
+# to add more parameters, add another dictionary to a list
 
-# test_parameters = [{"n_pop": 50, "iters": 10, "c1": 2.0, "c2": 2.0}, {"n_pop": 40, "iters": 10, "c1": 2.0, "c2": 2.0},
-#                    {"n_pop": 30, "iters": 10, "c1": 2.0, "c2": 2.0}, {"n_pop": 50, "iters": 10, "c1": 1.49445, "c2": 1.49445},
-#                    {"n_pop": 40, "iters": 10, "c1": 1.49445, "c2": 1.49445}, {"n_pop": 30, "iters": 10, "c1": 1.49445, "c2": 1.49445}]
+test_parameters = [{"n_pop": 50, "iters": 22, "c1": 2.05, "c2": 2.05}]
 
-# test_parameters = [{"n_pop": 40, "iters": 18, "c1": 2.0, "c2": 2.0}, {"n_pop": 40, "iters": 18, "c1": 1.49445, "c2": 1.49445},
-#                    {"n_pop": 40, "iters": 18, "c1": 2.8, "c2": 1.3}]
-test_parameters = [{"n_pop": 70, "iters": 22, "c1": 2.05, "c2": 2.05}]
-#test_parameters = [{"n_pop": 3, "iters": 2, "c1": 2.0, "c2": 2.0}, {"n_pop": 3, "iters": 2, "c1": 1.9, "c2": 1.46}]
 for el in test_parameters:
     n_pop = el["n_pop"]
     iters = el["iters"]
@@ -38,7 +28,7 @@ for el in test_parameters:
 
     best_scores = []
     best_accuracies = []
-    #loop to check various parameters
+    #loop to check get more statisctics data
     for i in range(10):
         print(i)
         #Creating the initial population.
@@ -63,10 +53,7 @@ for el in test_parameters:
         print("Accuracy of the best solution is : ", result[1])
         best_scores.append(result[1])
         best_accuracies.append(result[2])
-    print(100*'-')
-    print("Best score: {}".format(max(best_scores)))
-    print("Mean: {}".format(statistics.mean(best_scores)))
-    print("Stdev: {}".format(statistics.stdev(best_scores)))
+
 
     f = open("outputs/iters{}_population{}_c1_{}_c2_{}.txt".format(iters, n_pop, c1, c2), "w")
     f.write("Results for {} iters, population {}, c1 = {}, c2 = {}\n".format(iters, n_pop, c1, c2))
